@@ -1,4 +1,4 @@
-# YesCoin
+# YesCoin "P"
 ![YesCoin Logo](src/static/logo.png "YesCoin Logo")
 
 このリポジトリにアクセスしていただいて、お誠にありがとうございます！
