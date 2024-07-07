@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{url_for("static", filename="style.css")}}" rel="stylesheet"/>
+    <title>送金</title>
+    <link rel="icon" href="static/logo.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+{% extends "base.html" %}
+{% block main %}
+<body class="container-fluid">
+    <h1>送金</h1>
+    <p>送金には時間がかかる可能性があります。</p>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% elif success %}
+    <p style="color: green;">{{ success }}</p>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post" class="mb-3" id="sendForm">
+                <div class="mb-2">
+                    <label for="recipient">受取人アドレス:</label>
+                    <input type="text" class="form-control" id="address" name="recipient" required>
+                </div>
+                <div class="mb-2">
+                    <label for="amount">金額:</label>
+                    <input type="number" class="form-control" id="amount" name="amount" step="0.001" required>
+                </div>
+                <button type="submit" id="submit" class="btn btn-primary">
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    送金
+                </button>
+            </form>
+        </div>
+    </div>
+    <a href="{{ url_for('index') }}">戻る</a>
+    <script>
+        document.getElementById('sendForm').addEventListener('submit', function(event) {
+            var addressInput = document.getElementById("address");
+            var amountInput = document.getElementById("amount");
+            var submitButton = document.getElementById("submit");
+            addressInput.readOnly = amountInput.readOnly = true;
+            submitButton.disabled = true;
+            var spinner = this.querySelector('.spinner-border');
+            spinner.classList.remove('d-none');
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+{% endblock %}
+</html>

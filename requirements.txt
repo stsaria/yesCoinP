@@ -1,0 +1,5 @@
+pyjwt
+requests
+Flask
+Flask-Bcrypt
+portalocker

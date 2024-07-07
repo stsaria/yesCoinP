@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+            <a class="nav-link title" href="/">
+                <img src="static/logo.png" width="240px"> 
+            </a>
+            <div class="d-flex">
+                <ul class="navbar-nav">  
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+<hr>
+{% block main %}
+{% endblock %}
+<hr>
+仮想通貨うんちく(By ChatGPT)
+<div id="knowledge" style="text-align: center;"></div>
+<script>
+    const knowledgeArray = [
+        "ビットコインは2009年にサトシ・ナカモトによって作成されました。",
+        "仮想通貨のマイニングは複雑な数学問題を解くことによって行われます。",
+        "イーサリアムはスマートコントラクト機能を持つブロックチェーンプラットフォームです。",
+        "リップルは国際送金に特化した仮想通貨です。",
+        "ライトコインはビットコインの軽量版として設計されました。",
+        "ブロックチェーン技術は分散型台帳として機能します。",
+        "ビットコインの供給量は2100万枚に限定されています。",
+        "イーサリアムの創設者はヴィタリック・ブテリンです。",
+        "テザーは法定通貨と連動したステーブルコインです。",
+        "ビットコインの最小単位は「サトシ」です。",
+        "デフィ（DeFi）は分散型金融を指します。",
+        "仮想通貨取引所は仮想通貨の売買を行うプラットフォームです。",
+        "ビットコインのブロック生成時間は約10分です。",
+        "ハードフォークとはブロックチェーンの互換性のないアップデートを指します。",
+        "ICO（Initial Coin Offering）は仮想通貨の新規公開を指します。",
+        "ステーキングは保有する仮想通貨をネットワークの運営に使用することです。",
+        "ビットコインキャッシュはビットコインのハードフォークから生まれました。",
+        "ゼロ知識証明はプライバシーを保護するための暗号技術です。",
+        "分散型取引所（DEX）は中央管理者なしで運営される取引所です。",
+        "ビットコインの初の商用取引はピザ2枚と交換されました。",
+        "アルトコインはビットコイン以外の仮想通貨を指します。",
+        "プルーフ・オブ・ワーク（PoW）はビットコインのコンセンサスメカニズムです。",
+        "プルーフ・オブ・ステーク（PoS）は保有量に基づくコンセンサスメカニズムです。",
+        "ビットコインの半減期は約4年ごとに訪れます。",
+        "ハッシュ関数はデータを固定長の値に変換する暗号技術です。",
+        "ブロックチェーンの不変性はデータの改ざんを防ぎます。",
+        "NFT（非代替性トークン）は唯一無二のデジタル資産を表します。",
+        "スマートコントラクトは自動実行される契約です。",
+        "ビットコインの初期価格は1セント未満でした。",
+        "ライトニングネットワークはビットコインのスケーラビリティを向上させます。"
+    ];
+
+    function displayRandomKnowledge() {
+        const randomIndex = Math.floor(Math.random() * knowledgeArray.length);
+        const randomKnowledge = knowledgeArray[randomIndex];
+        document.getElementById('knowledge').innerText = randomKnowledge;
+    }
+    displayRandomKnowledge();
+</script>
