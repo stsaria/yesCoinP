@@ -1,5 +1,6 @@
 # YesCoin
 ![YesCoin Logo](src/static/logo.png "YesCoin Logo")
+
 このリポジトリにアクセスしていただいて、お誠にありがとうございます！
 ## YesCoinとは
 YesCoinはある団体(YINST)の、仮想通貨です。
@@ -9,6 +10,10 @@ YesCoinはある団体(YINST)の、仮想通貨です。
 お願い：YesCoinはできたばかりでバグが多いので、アップデートが頻繁に起こります
 
 定期的に```git pull```をしていただけると助かります
+## このリポジトリについて
+YesCoinというリポジトリがありますが、こっちは台帳の同期の安全性が高いです。
+
+YINSTではYesCoinPバージョンを使っていないので、注意してください。
 ## 動作要件
 - Python3(~3.9ぐらいがおすすめ)
 - pip3
