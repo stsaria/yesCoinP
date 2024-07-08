@@ -1,9 +1,17 @@
 from flask import Flask, request, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from etc import *
 from blockchain import BlockChain
 import traceback, requests
 
 app = Flask(__name__)
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["10000 per day", "3000 per hour"]
+)
+
 chain = []
 
 blockchain = BlockChain()

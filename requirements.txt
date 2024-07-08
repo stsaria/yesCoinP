@@ -2,4 +2,5 @@ pyjwt
 requests
 Flask
 Flask-Bcrypt
+Flask-Limiter
 portalocker

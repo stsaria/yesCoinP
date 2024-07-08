@@ -1,10 +1,18 @@
 import traceback, requests, datetime, hashlib, secrets, jwt, os
 from etc import *
 from flask import Flask, request, make_response, redirect, url_for, session, render_template, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from functools import wraps
 from blockchain import BlockChain
 
 app = Flask(__name__)
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["10000 per day", "3000 per hour"]
+)
+
 secretKey = loadData(secretKeyFile, empty={})
 if not "key" in secretKey:
     secretKey["key"] = secrets.token_hex(16)
