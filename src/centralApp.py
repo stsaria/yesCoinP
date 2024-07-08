@@ -22,7 +22,7 @@ def index():
 
 @app.route("/getCentralServers", methods=["GET"])
 def getCentralServers():
-    return jsonify({"centralServers": loadData(centralServers)}), 200
+    return jsonify({"centralServers": loadData(centralServersFile)}), 200
 
 @app.route("/sync", methods=["POST"])
 def sync():
