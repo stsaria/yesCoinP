@@ -205,35 +205,37 @@ def sync():
 
 @app.route("/send", methods=["GET", "POST"])
 @requiresAuth
-def send():
+def send(sender, recipient, amount):
     # 送金
     if request.method == "POST":
         # 一応ちゃんとほかのノードにこの人の履歴がないか同期しとく
-        amount = float(request.form["amount"])
         if amount < 0.001:
-            return render_template("send.html", error="送金額は0.001より小さくできません")
+            return False, "送金額は0.001より小さくできません"
         sync()
-        sender = hashlib.sha256(session["username"].encode()).hexdigest()
-        recipient = request.form["recipient"]
         if blockchain.getBalance(sender) < amount:
-            return render_template("send.html", error="残高が不足しています")
+            return False, "残高が不足しています"
+        elif blockchain.newTransaction(sender, recipient, amount) == 114514:
+            return False, "送金時のプルーフ計算に失敗しました"
         blockchain.newTransaction(sender, recipient, amount)
-        return render_template("send.html", success="送金が成功しました")
+        return True, "送金が成功しました"
     return render_template("send.html")
+
+@app.route("/send", methods=["GET", "POST"])
+def sendPage():
+    result, message = send(hashlib.sha256(session["username"].encode()).hexdigest(), request.form["recipient"], float(request.form["amount"]))
+    if result:
+        return render_template("send.html", success=message)
+    else:
+        return render_template("send.html", error=message)
 
 @app.route("/sendUrl", methods=["GET"])
 @requiresAuth
-def sendFromUrl():
-    # 送金
-    # 一応ちゃんとほかのノードにこの人の履歴がないか同期しとく
-    sync()
-    sender = hashlib.sha256(session["username"].encode()).hexdigest()
-    recipient = request.args.get("recipient")
-    amount = float(request.args.get("amount"))
-    if blockchain.getBalance(sender) < amount:
-        return render_template("sendUrl.html", error="残高が不足しています")
-    blockchain.newTransaction(sender, recipient, amount)
-    return render_template("sendUrl.html", success="送金が成功しました")
+def sendFromUrlPage():
+    result, message = send(hashlib.sha256(session["username"].encode()).hexdigest(), request.args.get("recipient"), float(request.args.get("amount")))
+    if result:
+        return render_template("send.html", success=message)
+    else:
+        return render_template("send.html", error=message)
 
 @app.route('/sync', methods=['GET'])
 def syncPage():

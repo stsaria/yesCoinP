@@ -29,8 +29,15 @@ class BlockChain:
     
     def mining(self, address, newBlock=True):
         lastBlock = self.lastBlock
-        lastProof = lastBlock["proof"]
-        proof = self.proofOfWork(lastProof)
+        proof = self.proofOfWork()
+        if not proof:
+            block = {
+                "index": 0,
+                "timestamp": str(datetime.datetime.now()),
+                "transactions": [],
+                "proof": 0,
+                "previousHash": "成功しませんでした"
+            }
         self.transactions.append({
             "sender": "0",
             "recipient": address,
@@ -52,7 +59,9 @@ class BlockChain:
                 'amount': amount,
             })
             lastBlock = self.lastBlock
-            proof = self.proofOfWork(lastBlock["proof"])
+            proof = self.proofOfWork()
+            if not proof:
+                return 114514
             previousHash = self.hash(lastBlock)
             self.newBlock(proof, previousHash)
         currentTime = datetime.datetime.now()
@@ -81,11 +90,14 @@ class BlockChain:
         # 最後のブロックを返す
         return self.chain[-1]
 
-    def proofOfWork(self, lastProof):
+    def proofOfWork(self):
         # ブロックチェーンの新しいブロックを生成するための証明
         proof = 0
-        while not self.validProof(lastProof, proof):
+        while not self.validProof(self.lastBlock["proof"], proof) and proof < 10000000000:
             proof += 1
+        if proof >= 10000000000:
+            # proofの計算があまりにも多すぎたら
+            return None
         return proof
 
     def validProof(self, lastProof, proof):
