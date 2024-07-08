@@ -124,9 +124,9 @@ class BlockChain:
                     okChain[i]["transactions"].pop(j)
                 elif not currentBlock["transactions"][j]["sender"] == "0" and currentBlock["transactions"][j]["amount"] < 0.001:
                     okChain[i]["transactions"].pop(j)
-            # すべてのユーザーの残高チェック
-            for user in users:
-                if self.getBalance(hashlib.sha256(user.encode()).hexdigest(), chain=okChain) < 0:
-                    print(f"ユーザー{hashlib.sha256(user.encode()).hexdigest()}の残高が負の値になっています")
-                    return bootstrapChain
+        # すべてのユーザーの残高チェック
+        for user in users:
+            if self.getBalance(hashlib.sha256(user.encode()).hexdigest(), chain=okChain) < 0:
+                print(f"ユーザー{hashlib.sha256(user.encode()).hexdigest()}の残高が負の値になっています")
+                return bootstrapChain
         return okChain
