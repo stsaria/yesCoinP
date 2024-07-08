@@ -38,6 +38,7 @@ class BlockChain:
                 "proof": 0,
                 "previousHash": "成功しませんでした"
             }
+            return block
         self.transactions.append({
             "sender": "0",
             "recipient": address,
