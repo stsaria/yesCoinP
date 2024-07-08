@@ -7,8 +7,8 @@ import traceback, requests
 
 app = Flask(__name__)
 limiter = Limiter(
-    key_func=get_remote_address,
     app=app,
+    key_func=get_remote_address,
     default_limits=["10000 per day", "3000 per hour"]
 )
 
@@ -22,7 +22,7 @@ def index():
 
 @app.route("/getCentralServers", methods=["GET"])
 def getCentralServers():
-    return jsonify({"centralServers": loadData(centralServersFile)}), 200
+    return jsonify({"centralServers": centralServers}), 200
 
 @app.route("/sync", methods=["POST"])
 def sync():
@@ -33,10 +33,10 @@ def sync():
     rtc = tc = 0
     result = {"chain": blockchain.chain, "users": users, "centralServers": centralServers}
     for c in chain:
-        for t in range(len(c["transactions"])):
+        for _ in range(len(c["transactions"])):
             rtc += 1
     for c in blockchain.chain:
-        for t in range(len(c["transactions"])):
+        for _ in range(len(c["transactions"])):
             tc += 1
     if rtc > tc:
         blockchain.chain = chain
