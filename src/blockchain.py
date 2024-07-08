@@ -94,11 +94,12 @@ class BlockChain:
         guessHash = hashlib.sha256(guess).hexdigest()
         return guessHash[:self.difficulty] == "0" * self.difficulty
     
-    def getBalance(self, address):
+    def getBalance(self, address, chain=None):
         # 所持金表示
+        if not chain: chain=self.chain
         balance = Decimal(0)
-        for block in self.chain:
-            for transaction in block['transactions']:
+        for i in range(1, len(chain)):
+            for transaction in chain[i]['transactions']:
                 if transaction['sender'] == address:
                     balance -= Decimal(str(transaction['amount']))
                 if transaction['recipient'] == address:
@@ -113,16 +114,19 @@ class BlockChain:
             currentBlock = chain[i]
             previousBlock = chain[i - 1]
             if currentBlock["previousHash"] != self.hash(previousBlock):
-                print(f"Block {i} has incorrect previous hash.\n{currentBlock['previousHash']}!={self.hash(previousBlock)}")
+                print(f"ブロック{i}のハッシュが正しくありません\n{currentBlock['previousHash']}!={self.hash(previousBlock)}")
                 return bootstrapChain
             elif not self.validProof(previousBlock["proof"], currentBlock["proof"]):
-                print(f"Block {i} has invaild proof of work.")
+                print(f"このブロック{i}のプルーフは不正です")
                 return bootstrapChain
-            if currentBlock['proof'] == None:
-                print(f"警告:このブロック({i})のproofはnullです")
             for j in reversed(range(len(currentBlock["transactions"]))):
                 if currentBlock["transactions"][j]["sender"] == "0" and not currentBlock["transactions"][j]["amount"] <= 0.001:
                     okChain[i]["transactions"].pop(j)
                 elif not currentBlock["transactions"][j]["sender"] == "0" and currentBlock["transactions"][j]["amount"] < 0.001:
                     okChain[i]["transactions"].pop(j)
+            # すべてのユーザーの残高チェック
+            for user in users:
+                if self.getBalance(hashlib.sha256(user.encode()).hexdigest(), chain=okChain) < 0:
+                    print(f"ユーザー{hashlib.sha256(user.encode()).hexdigest()}の残高が負の値になっています")
+                    return bootstrapChain
         return okChain

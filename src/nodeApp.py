@@ -160,6 +160,7 @@ def sync():
             response = requests.post(f"{centralServer}/sync", data=json.dumps(data), headers={"Content-Type": "application/json"}, timeout=7)
             if response.status_code == 200:
                 chain = response.json()['chain']
+                users = addUniqueKeys(users, response.json()['users'])
                 okChain = blockchain.validChain(chain)
                 # transaction count var
                 rtc = tc = 0
@@ -174,7 +175,6 @@ def sync():
                     # 取得したチェーンのトランザクション数が
                     # 今のトランザクション数より大きかった時
                     blockchain.chain = longestChain = okChain
-                users = addUniqueKeys(users, response.json()['users'])
                 responseCentralServers = []
                 for responseCentralServer in response.json()['centralServers']:
                     if extractBaseUrl(responseCentralServer):
