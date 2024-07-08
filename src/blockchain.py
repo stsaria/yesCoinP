@@ -133,7 +133,7 @@ class BlockChain:
                 print(f"このブロック{i}のプルーフは不正です")
                 return bootstrapChain
             for j in reversed(range(len(currentBlock["transactions"]))):
-                if currentBlock["transactions"][j]["sender"] == "0" and not currentBlock["transactions"][j]["amount"] <= 0.001:
+                if currentBlock["transactions"][j]["sender"] == "0" and not currentBlock["transactions"][j]["amount"] > 0.001:
                     okChain[i]["transactions"].pop(j)
                 elif not currentBlock["transactions"][j]["sender"] == "0" and currentBlock["transactions"][j]["amount"] < 0.001:
                     okChain[i]["transactions"].pop(j)
