@@ -7,8 +7,8 @@ import traceback, requests
 
 app = Flask(__name__)
 limiter = Limiter(
-    app,
     key_func=get_remote_address,
+    app=app,
     default_limits=["10000 per day", "3000 per hour"]
 )
 
